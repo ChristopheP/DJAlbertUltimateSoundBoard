@@ -3,6 +3,10 @@ var Soundboard = function () {
 
     // loads an audio file (path) and links it on a button (id)
     this.load = function (path, id, stop) {
+        // Loading spinner
+        $('#' + id).before('<span id="spinner' + id + '" class="ajax-loader"></span>');
+        $('#' + id).hide();
+
         var request = new XMLHttpRequest();
         request.open('GET', path);
         request.responseType = 'arraybuffer';
@@ -10,6 +14,9 @@ var Soundboard = function () {
             var undecodedAudio = request.response;
             context.decodeAudioData(undecodedAudio, function (buffer) {
                 linkPlay(id, buffer, stop);
+                // loading spinner off
+                $('#spinner' + id).remove();
+                $('#' + id).show();
             });
         };
         request.send();
